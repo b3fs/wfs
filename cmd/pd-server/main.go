@@ -8,8 +8,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/hawkingrei/wfs/pkg/logutil"
-	"github.com/hawkingrei/wfs/server"
+	"github.com/b3fs/wfs/pkg/logutil"
+	"github.com/b3fs/wfs/server"
 )
 
 func main() {
