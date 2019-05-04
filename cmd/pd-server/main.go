@@ -10,6 +10,7 @@ import (
 
 	"github.com/b3fs/wfs/pkg/logutil"
 	"github.com/b3fs/wfs/server"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -20,6 +21,25 @@ func main() {
 		server.PrintPDInfo()
 		os.Exit(0)
 	}
+
+	defer logutil.LogPanic()
+
+	switch errors.Cause(err) {
+	case nil:
+	case flag.ErrHelp:
+		exit(0)
+	default:
+		log.Fatal("parse cmd flags error", zap.Error(err))
+	}
+	// New zap logger
+	err = cfg.SetupLogger()
+	if err == nil {
+		log.ReplaceGlobals(cfg.GetZapLogger(), cfg.GetZapLogProperties())
+	} else {
+		log.Fatal("initialize logger error", zap.Error(err))
+	}
+	// Flushing any buffered log entries
+	defer log.Sync()
 
 	err = logutil.InitLogger(&cfg.Log)
 	if err != nil {

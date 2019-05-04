@@ -9,6 +9,9 @@ import (
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/embed"
 	"github.com/pingcap/kvproto/pkg/pdpb"
+
+	"github.com/b3fs/wfs/server/core"
+	"github.com/b3fs/wfs/server/namespace"
 )
 
 const (
@@ -68,7 +71,6 @@ type Server struct {
 	// For async region heartbeat.
 	hbStreams *heartbeatStreams
 }
-
 
 // CreateServer creates the UNINITIALIZED pd server with given configuration.
 func CreateServer(cfg *Config, apiRegister func(*Server) http.Handler) (*Server, error) {
